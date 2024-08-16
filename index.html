@@ -1,28 +1,58 @@
-<html>
-    <head>
-        <title>Pizzakert</title>
-        <style>
-            body {
-                margin: 0px;
-                padding: 0px;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pizzakert</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="image-container"></div>
+
+    <script>
+        const baseUrl = 'assets/';
+        const imageContainer = document.getElementById('image-container');
+        let imageNumber = 1;
+        
+        async function tryLoadImage(imageNumber) {
+            const url = `${baseUrl}${imageNumber}.jpg`;
+            const img = new Image();
+            img.src = url;
+
+            return new Promise((resolve) => {
+                img.onload = () => {                    
+                    imageContainer.appendChild(img);
+                    resolve(true); 
+                };
+                img.onerror = () => {                    
+                    resolve(false); 
+                };
+            });
+        }
+
+        async function loadImages() {
+            let imageFound = true;
+
+            while (imageFound) {
+                imageFound = await tryLoadImage(imageNumber);
+                if (imageFound) {
+                    imageNumber++;
+                }
             }
-            img {
-                width: 100%;
-            }
-        </style>
-    </head>
-    <body>
-        <img src="assets/1.jpg">
-        <img src="assets/2.jpg">
-        <img src="assets/3.jpg">
-        <img src="assets/4.jpg">
-        <img src="assets/5.jpg">
-        <img src="assets/6.jpg">
-        <img src="assets/7.jpg">
-        <img src="assets/8.jpg">
-        <img src="assets/9.jpg">
-        <img src="assets/10.jpg">
-        <img src="assets/11.jpg">
-        <img src="assets/12.jpg">
-    </body>
+        }
+        
+        loadImages();
+    </script>
+</body>
 </html>
